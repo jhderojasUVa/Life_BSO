@@ -4,20 +4,24 @@ import Title from './components/Title';
 import VideoFeed from './components/VideoFeed';
 import CaptureButton from './components/CaptureButton';
 import Prediction from './components/Prediction';
+import './Camera.css';
 
 const Camera: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [prediction, setPrediction] = useState<string>('');
+    const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            captureAndPredict();
+            if (isCameraOn) {
+                captureAndPredict();
+            }
         }, 10000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [isCameraOn]);
 
     const startCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -26,9 +30,20 @@ const Camera: React.FC = () => {
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
                 }
+                setIsCameraOn(true);
             } catch (error) {
                 console.error('Error accessing the camera:', error);
             }
+        }
+    };
+
+    const stopCamera = () => {
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            videoRef.current.srcObject = null;
+            setIsCameraOn(false);
         }
     };
 
@@ -64,13 +79,17 @@ const Camera: React.FC = () => {
     };
 
     return (
-        <div>
-            <Title />
-            <VideoFeed videoRef={videoRef} />
+        <div className="camera-container">
+            <VideoFeed videoRef={videoRef} className="video-feed" />
+            <div className="overlay">
+                <Title className="title" />
+                <div className="controls">
+                    <CaptureButton onClick={isCameraOn ? stopCamera : startCamera} text={isCameraOn ? 'Stop' : 'Start'} />
+                    <button onClick={captureAndPredict}>Predict</button>
+                </div>
+                <Prediction prediction={prediction} className="prediction" />
+            </div>
             <canvas ref={canvasRef} width="320" height="240" style={{ display: 'none' }}></canvas>
-            <CaptureButton onClick={startCamera} />
-            <button onClick={captureAndPredict}>Predict</button>
-            <Prediction prediction={prediction} />
             <audio ref={audioRef} />
         </div>
     );

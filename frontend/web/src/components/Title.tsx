@@ -1,7 +1,11 @@
 import React from 'react';
 
-const Title: React.FC = () => {
-    return <h1>Object-based Music Player</h1>;
+interface TitleProps {
+    className?: string;
+}
+
+const Title: React.FC<TitleProps> = ({ className }) => {
+    return <h1 className={className}>Object-based Music Player</h1>;
 };
 
 export default Title;
