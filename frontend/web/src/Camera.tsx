@@ -1,5 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
+import Title from './components/Title';
+import VideoFeed from './components/VideoFeed';
+import CaptureButton from './components/CaptureButton';
+import Prediction from './components/Prediction';
 
 const Camera: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -61,12 +65,12 @@ const Camera: React.FC = () => {
 
     return (
         <div>
-            <h1>BSO of your life</h1>
-            <button onClick={startCamera}>Start Camera</button>
-            <video ref={videoRef} width="320" height="240" autoPlay playsInline muted></video>
+            <Title />
+            <VideoFeed videoRef={videoRef} />
             <canvas ref={canvasRef} width="320" height="240" style={{ display: 'none' }}></canvas>
-            <button onClick={captureAndPredict}>Capture and Predict</button>
-            {prediction && <p>{prediction}</p>}
+            <CaptureButton onClick={startCamera} />
+            <button onClick={captureAndPredict}>Predict</button>
+            <Prediction prediction={prediction} />
             <audio ref={audioRef} />
         </div>
     );
