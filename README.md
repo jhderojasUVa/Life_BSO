@@ -7,7 +7,19 @@ This project is a web application that uses your camera to recognize objects and
 - `frontend/`: Contains the React frontend application.
 - `backend/`: Contains the FastAPI backend application.
 
-## How to Run the Application
+## Running with Docker
+
+To run the application using Docker, you will need to have Docker and Docker Compose installed.
+
+1.  **Build and run the containers:**
+    ```bash
+    docker-compose up --build
+    ```
+
+2.  **Access the application:**
+    - The frontend will be available at `http://localhost:5173`.
+
+## How to Run the Application Manually
 
 ### Backend
 

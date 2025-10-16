@@ -58,7 +58,7 @@ const Camera: React.FC = () => {
                         formData.append('file', blob, 'image.jpg');
 
                         try {
-                            const response = await axios.post('http://localhost:8000/predict', formData, {
+                            const response = await axios.post('/api/predict', formData, {
                                 headers: {
                                     'Content-Type': 'multipart/form-data',
                                 },
@@ -66,7 +66,7 @@ const Camera: React.FC = () => {
                             const { object, music_file } = response.data;
                             setPrediction(`Predicted object: ${object}`);
                             if (audioRef.current) {
-                                audioRef.current.src = `http://localhost:8000/music/${music_file}`;
+                                audioRef.current.src = `/music/${music_file}`;
                                 audioRef.current.play();
                             }
                         } catch (error) {
