@@ -35,14 +35,13 @@ This project is a web application that uses your camera to recognize objects and
     ```
 
 2.  **Install the dependencies:**
-    *If you encounter issues with this step, try running the command with the `--no-bin-links` flag.*
     ```bash
-    npm install
+    make install
     ```
 
 3.  **Run the frontend development server:**
     ```bash
-    npm run dev
+    make dev
     ```
     The frontend will be running at `http://localhost:5173`.
 

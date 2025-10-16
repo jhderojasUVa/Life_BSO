@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Camera: React.FC = () => {
@@ -6,6 +6,14 @@ const Camera: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [prediction, setPrediction] = useState<string>('');
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            captureAndPredict();
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const startCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -21,7 +29,7 @@ const Camera: React.FC = () => {
     };
 
     const captureAndPredict = async () => {
-        if (videoRef.current && canvasRef.current) {
+        if (videoRef.current && videoRef.current.srcObject && canvasRef.current) {
             const context = canvasRef.current.getContext('2d');
             if (context) {
                 context.drawImage(videoRef.current, 0, 0, 320, 240);
@@ -53,13 +61,13 @@ const Camera: React.FC = () => {
 
     return (
         <div>
-            <h1>Object-based Music Player</h1>
+            <h1>BSO of your life</h1>
             <button onClick={startCamera}>Start Camera</button>
             <video ref={videoRef} width="320" height="240" autoPlay playsInline muted></video>
             <canvas ref={canvasRef} width="320" height="240" style={{ display: 'none' }}></canvas>
             <button onClick={captureAndPredict}>Capture and Predict</button>
             {prediction && <p>{prediction}</p>}
-            <audio ref={audioRef} controls />
+            <audio ref={audioRef} />
         </div>
     );
 };
