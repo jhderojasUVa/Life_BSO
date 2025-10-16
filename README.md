@@ -7,65 +7,23 @@ This project is a web application that uses your camera to recognize objects and
 - `frontend/`: Contains the React frontend application.
 - `backend/`: Contains the FastAPI backend application.
 
-## Running with Docker
+## Development
+
+This project is set up as a monorepo with a frontend and a backend. You can run the application using Docker or manually using the root `Makefile`.
+
+### Using Docker
 
 To run the application using Docker, you will need to have Docker and Docker Compose installed.
 
-1.  **Build and run the containers:**
-    ```bash
-    docker-compose up --build
-    ```
+- `make docker-up`: Build and run the containers.
+- `make docker-down`: Stop and remove the containers.
 
-2.  **Access the application:**
-    - The frontend will be available at `http://localhost:5173`.
+### Running Manually
 
-## How to Run the Application Manually
-
-### Backend
-
-1.  **Navigate to the backend directory:**
-    ```bash
-    cd backend
-    ```
-
-2.  **Install the dependencies:**
-    ```bash
-    make install
-    ```
-
-3.  **Run the backend server:**
-    ```bash
-    make run
-    ```
-    The backend will be running at `http://localhost:8000`.
-
-### Frontend
-
-1.  **Navigate to the frontend directory:**
-    ```bash
-    cd frontend/web
-    ```
-
-2.  **Install the dependencies:**
-    ```bash
-    make install
-    ```
-
-3.  **Run the frontend development server:**
-    ```bash
-    make dev
-    ```
-    The frontend will be running at `http://localhost:5173`.
-
-## Development
-
-The `Makefile` in the `backend` directory provides several commands to help with development:
-
-- `make install`: Install the project dependencies using Poetry.
-- `make run`: Start the development server.
-- `make lint`: Lint the code using ruff.
-- `make test`: Run the tests using pytest.
-- `make clean`: Remove the virtual environment and other build artifacts.
+- `make install`: Install the dependencies for both the frontend and the backend.
+- `make run`: Run both the frontend and the backend development servers.
+- `make lint`: Lint both the frontend and the backend.
+- `make clean`: Clean the backend build artifacts.
 
 ## Music Files
 
