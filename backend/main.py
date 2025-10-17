@@ -63,8 +63,11 @@ async def predict(file: UploadFile = File(...)):
     # Get the top prediction
     top_prediction = decoded_predictions[0]
     object_name = top_prediction[1]
-    
+
     # Map the object to a music file
     music_file = MUSIC_MAPPING.get(object_name, DEFAULT_MUSIC)
     
+    log_message("POST", f"Predicted object: {object_name}")
+    log_message("POST", f"Music file: {music_file}")
+
     return {"object": object_name, "music_file": music_file}
