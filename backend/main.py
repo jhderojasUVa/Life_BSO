@@ -5,6 +5,7 @@ import numpy as np
 import tensorflow as tf
 from PIL import Image
 import io
+from logger import log_message
 
 app = FastAPI()
 
@@ -33,6 +34,7 @@ MUSIC_MAPPING = {
 DEFAULT_MUSIC = "default_music.mid"
 
 def preprocess_image(image_data):
+    log_message("PREPROCESS", "Preprocessing image")
     """Preprocesses the image for the model."""
     image = Image.open(io.BytesIO(image_data)).resize((224, 224))
     image = np.array(image)
@@ -41,11 +43,14 @@ def preprocess_image(image_data):
     return image
 
 @app.get("/")
+@app.get("/health")
 def read_root():
+    log_message("GET", "Request to / or /health")
     return {"message": "Backend is running"}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
+    log_message("POST", "Request to /predict")
     """
     Receives an image, uses MobileNetV2 to predict the object,
     and returns a corresponding music file name.
@@ -63,4 +68,3 @@ async def predict(file: UploadFile = File(...)):
     music_file = MUSIC_MAPPING.get(object_name, DEFAULT_MUSIC)
     
     return {"object": object_name, "music_file": music_file}
-

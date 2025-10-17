@@ -3,9 +3,8 @@ FROM node:18-alpine
 WORKDIR /app
 
 COPY package*.json ./
-COPY Makefile ./
 
-RUN make install
+RUN npm install --no-bin-links
 
 COPY . .
 
