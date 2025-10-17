@@ -5,7 +5,7 @@ interface TitleProps {
 }
 
 const Title: React.FC<TitleProps> = ({ className }) => {
-    return <h1 className={className}>Object-based Music Player</h1>;
+    return <h1 className={className}>Life BSO</h1>;
 };
 
 export default Title;

@@ -1,6 +1,8 @@
-# BSO of Your Life
+# Life BSO
 
-This project is a web application that uses your camera to recognize objects and plays different music based on the recognized object.
+**Body, Soul, and Mind**
+
+This project is a web application that uses your camera to recognize objects and plays different music based on the recognized object. It's designed to create a personalized atmosphere based on your environment.
 
 ## Getting Started
 
