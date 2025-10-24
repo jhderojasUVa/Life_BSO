@@ -1,3 +1,8 @@
+/**
+ * @file Camera.tsx
+ * @description This component is the main component of the application. It handles the camera, the prediction, and the audio.
+ * It uses two audio elements to create a crossfade effect between the audio files when a different object is detected.
+ */
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Title from './components/Title';
@@ -7,14 +12,21 @@ import Prediction from './components/Prediction';
 import './Camera.css';
 
 const Camera: React.FC = () => {
+    // Refs for the video, canvas, and audio elements
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const audioRef1 = useRef<HTMLAudioElement>(null);
     const audioRef2 = useRef<HTMLAudioElement>(null);
-    const [currentAudio, setCurrentAudio] = useState<'audio1' | 'audio2'>('audio1');
-    const [prediction, setPrediction] = useState<string>('');
-    const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
 
+    // State variables
+    const [currentAudio, setCurrentAudio] = useState<'audio1' | 'audio2'>('audio1'); // The current audio player
+    const [prediction, setPrediction] = useState<string>(''); // The prediction from the backend
+    const [isCameraOn, setIsCameraOn] = useState<boolean>(false); // Whether the camera is on or off
+
+    /**
+     * @function startCamera
+     * @description Starts the camera and sets the videoRef to the stream.
+     */
     const startCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             try {
@@ -29,6 +41,10 @@ const Camera: React.FC = () => {
         }
     };
 
+    /**
+     * @function stopCamera
+     * @description Stops the camera and removes the stream from the videoRef.
+     */
     const stopCamera = () => {
         if (videoRef.current && videoRef.current.srcObject) {
             const stream = videoRef.current.srcObject as MediaStream;
@@ -39,6 +55,15 @@ const Camera: React.FC = () => {
         }
     };
 
+    /**
+     * @function fade
+     * @description Fades the volume of an audio element from a start to an end volume over a given duration.
+     * @param {HTMLAudioElement} element - The audio element to fade.
+     * @param {number} start - The starting volume.
+     * @param {number} end - The ending volume.
+     * @param {number} duration - The duration of the fade in milliseconds.
+     * @param {() => void} onComplete - A callback function to call when the fade is complete.
+     */
     const fade = useCallback((element: HTMLAudioElement, start: number, end: number, duration: number, onComplete?: () => void) => {
         let current = start;
         const increment = (end - start) / (duration / 50);
@@ -55,6 +80,10 @@ const Camera: React.FC = () => {
         }, 50);
     }, []);
 
+    /**
+     * @function captureAndPredict
+     * @description Captures a frame from the video, sends it to the backend for prediction, and handles the audio crossfade.
+     */
     const captureAndPredict = useCallback(async () => {
         if (videoRef.current && videoRef.current.srcObject && canvasRef.current) {
             const context = canvasRef.current.getContext('2d');
@@ -74,23 +103,28 @@ const Camera: React.FC = () => {
                             const { object, music_file } = response.data;
                             setPrediction(`Predicted object: ${object}`);
 
+                            // Determine which audio player is the new one and which is the old one
                             const newAudioPlayer = currentAudio === 'audio1' ? audioRef2.current : audioRef1.current;
                             const oldAudioPlayer = currentAudio === 'audio1' ? audioRef1.current : audioRef2.current;
 
                             if (newAudioPlayer && oldAudioPlayer) {
+                                // If the new music file is different from the old one, then crossfade
                                 if(oldAudioPlayer.src !== music_file){
                                     newAudioPlayer.src = `/music/${music_file}`;
                                     newAudioPlayer.volume = 0;
                                     newAudioPlayer.play();
     
+                                    // Fade out the old audio player and pause it when the fade is complete
                                     fade(oldAudioPlayer, 1, 0, 1000, () => {
                                         oldAudioPlayer.pause();
                                     });
+                                    // Fade in the new audio player
                                     fade(newAudioPlayer, 0, 1, 1000);
     
+                                    // Switch the current audio player
                                     setCurrentAudio(currentAudio === 'audio1' ? 'audio2' : 'audio1');
                                 }
-                            } else if(newAudioPlayer){
+                            } else if(newAudioPlayer){ // If there is no old audio player, just play the new one
                                 newAudioPlayer.src = `/music/${music_file}`;
                                 newAudioPlayer.volume = 1;
                                 newAudioPlayer.play();
@@ -105,6 +139,9 @@ const Camera: React.FC = () => {
         }
     }, [currentAudio, fade]);
 
+    /**
+     * @description This effect runs every 10 seconds and calls the captureAndPredict function if the camera is on.
+     */
     useEffect(() => {
         const interval = setInterval(() => {
             if (isCameraOn) {
@@ -127,6 +164,7 @@ const Camera: React.FC = () => {
                 <Prediction prediction={prediction} className="prediction" />
             </div>
             <canvas ref={canvasRef} width="320" height="240" style={{ display: 'none' }}></canvas>
+            {/* The two audio elements for the crossfade effect */}
             <audio ref={audioRef1} loop />
             <audio ref={audioRef2} loop />
         </div>

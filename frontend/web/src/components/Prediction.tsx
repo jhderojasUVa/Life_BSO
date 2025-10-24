@@ -1,3 +1,7 @@
+/**
+ * @file Prediction.tsx
+ * @description This component is responsible for displaying the prediction from the backend.
+ */
 import React from 'react';
 
 interface PredictionProps {

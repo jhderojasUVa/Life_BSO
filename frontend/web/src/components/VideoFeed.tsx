@@ -1,3 +1,7 @@
+/**
+ * @file VideoFeed.tsx
+ * @description This component is responsible for displaying the video feed from the camera.
+ */
 import React from 'react';
 
 interface VideoFeedProps {

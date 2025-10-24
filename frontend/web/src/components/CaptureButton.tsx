@@ -1,13 +1,16 @@
+/**
+ * @file CaptureButton.tsx
+ * @description This component is responsible for displaying the capture button.
+ */
 import React from 'react';
 
 interface CaptureButtonProps {
     onClick: () => void;
-    className?: string;
     text: string;
 }
 
-const CaptureButton: React.FC<CaptureButtonProps> = ({ onClick, className, text }) => {
-    return <button onClick={onClick} className={className}>{text}</button>;
+const CaptureButton: React.FC<CaptureButtonProps> = ({ onClick, text }) => {
+    return <button onClick={onClick}>{text}</button>;
 };
 
 export default CaptureButton;

@@ -1,3 +1,7 @@
+/**
+ * @file Title.tsx
+ * @description This component is responsible for displaying the title of the application.
+ */
 import React from 'react';
 
 interface TitleProps {
