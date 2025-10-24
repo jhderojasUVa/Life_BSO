@@ -9,19 +9,11 @@ import './Camera.css';
 const Camera: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const audioRef = useRef<HTMLAudioElement>(null);
+    const audioRef1 = useRef<HTMLAudioElement>(null);
+    const audioRef2 = useRef<HTMLAudioElement>(null);
+    const [currentAudio, setCurrentAudio] = useState<'audio1' | 'audio2'>('audio1');
     const [prediction, setPrediction] = useState<string>('');
     const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (isCameraOn) {
-                captureAndPredict();
-            }
-        }, 10000);
-
-        return () => clearInterval(interval);
-    }, [isCameraOn]);
 
     const startCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -47,7 +39,23 @@ const Camera: React.FC = () => {
         }
     };
 
-    const captureAndPredict = async () => {
+    const fade = useCallback((element: HTMLAudioElement, start: number, end: number, duration: number, onComplete?: () => void) => {
+        let current = start;
+        const increment = (end - start) / (duration / 50);
+        const interval = setInterval(() => {
+            current += increment;
+            element.volume = current;
+            if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                clearInterval(interval);
+                element.volume = end;
+                if (onComplete) {
+                    onComplete();
+                }
+            }
+        }, 50);
+    }, []);
+
+    const captureAndPredict = useCallback(async () => {
         if (videoRef.current && videoRef.current.srcObject && canvasRef.current) {
             const context = canvasRef.current.getContext('2d');
             if (context) {
@@ -65,10 +73,29 @@ const Camera: React.FC = () => {
                             });
                             const { object, music_file } = response.data;
                             setPrediction(`Predicted object: ${object}`);
-                            if (audioRef.current) {
-                                audioRef.current.src = `/music/${music_file}`;
-                                audioRef.current.play();
+
+                            const newAudioPlayer = currentAudio === 'audio1' ? audioRef2.current : audioRef1.current;
+                            const oldAudioPlayer = currentAudio === 'audio1' ? audioRef1.current : audioRef2.current;
+
+                            if (newAudioPlayer && oldAudioPlayer) {
+                                if(oldAudioPlayer.src !== music_file){
+                                    newAudioPlayer.src = `/music/${music_file}`;
+                                    newAudioPlayer.volume = 0;
+                                    newAudioPlayer.play();
+    
+                                    fade(oldAudioPlayer, 1, 0, 1000, () => {
+                                        oldAudioPlayer.pause();
+                                    });
+                                    fade(newAudioPlayer, 0, 1, 1000);
+    
+                                    setCurrentAudio(currentAudio === 'audio1' ? 'audio2' : 'audio1');
+                                }
+                            } else if(newAudioPlayer){
+                                newAudioPlayer.src = `/music/${music_file}`;
+                                newAudioPlayer.volume = 1;
+                                newAudioPlayer.play();
                             }
+
                         } catch (error) {
                             console.error('Error predicting the image:', error);
                         }
@@ -76,7 +103,17 @@ const Camera: React.FC = () => {
                 }, 'image/jpeg');
             }
         }
-    };
+    }, [currentAudio, fade]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (isCameraOn) {
+                captureAndPredict();
+            }
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, [isCameraOn, captureAndPredict]);
 
     return (
         <div className="camera-container">
@@ -90,7 +127,8 @@ const Camera: React.FC = () => {
                 <Prediction prediction={prediction} className="prediction" />
             </div>
             <canvas ref={canvasRef} width="320" height="240" style={{ display: 'none' }}></canvas>
-            <audio ref={audioRef} />
+            <audio ref={audioRef1} loop />
+            <audio ref={audioRef2} loop />
         </div>
     );
 };

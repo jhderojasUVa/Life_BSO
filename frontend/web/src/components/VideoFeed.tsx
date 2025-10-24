@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface VideoFeedProps {
-    videoRef: React.RefObject<HTMLVideoElement>;
+    videoRef: React.RefObject<HTMLVideoElement | null>;
     className?: string;
 }
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import Camera from './Camera';
 import './App.css';
 
