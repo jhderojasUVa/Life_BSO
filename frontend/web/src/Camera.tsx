@@ -1,7 +1,7 @@
 /**
- * @file Camera.tsx
- * @description This component is the main component of the application. It handles the camera, the prediction, and the audio.
- * It uses two audio elements to create a crossfade effect between the audio files when a different object is detected.
+ * @file This file contains the main component of the application, the Camera component.
+ * @author Jesus Angel Hernandez de Rojas
+ * @version 1.0.0
  */
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
@@ -11,6 +11,12 @@ import CaptureButton from './components/CaptureButton';
 import Prediction from './components/Prediction';
 import './Camera.css';
 
+/**
+ * @component Camera
+ * @description This is the main component of the application. It handles the camera, the prediction, and the audio.
+ * It uses two audio elements to create a crossfade effect between the audio files when a different object is detected.
+ * @returns {React.ReactElement} The Camera component.
+ */
 const Camera: React.FC = () => {
     // Refs for the video, canvas, and audio elements
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -26,6 +32,7 @@ const Camera: React.FC = () => {
     /**
      * @function startCamera
      * @description Starts the camera and sets the videoRef to the stream.
+     * @returns {Promise<void>}
      */
     const startCamera = async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -44,6 +51,7 @@ const Camera: React.FC = () => {
     /**
      * @function stopCamera
      * @description Stops the camera and removes the stream from the videoRef.
+     * @returns {void}
      */
     const stopCamera = () => {
         if (videoRef.current && videoRef.current.srcObject) {
@@ -62,7 +70,8 @@ const Camera: React.FC = () => {
      * @param {number} start - The starting volume.
      * @param {number} end - The ending volume.
      * @param {number} duration - The duration of the fade in milliseconds.
-     * @param {() => void} onComplete - A callback function to call when the fade is complete.
+     * @param {() => void} [onComplete] - A callback function to call when the fade is complete.
+     * @returns {void}
      */
     const fade = useCallback((element: HTMLAudioElement, start: number, end: number, duration: number, onComplete?: () => void) => {
         let current = start;
@@ -83,6 +92,7 @@ const Camera: React.FC = () => {
     /**
      * @function captureAndPredict
      * @description Captures a frame from the video, sends it to the backend for prediction, and handles the audio crossfade.
+     * @returns {Promise<void>}
      */
     const captureAndPredict = useCallback(async () => {
         if (videoRef.current && videoRef.current.srcObject && canvasRef.current) {
@@ -140,7 +150,11 @@ const Camera: React.FC = () => {
     }, [currentAudio, fade]);
 
     /**
+     * @function useEffect
      * @description This effect runs every 10 seconds and calls the captureAndPredict function if the camera is on.
+     * @param {() => void} effect - The effect function to run.
+     * @param {React.DependencyList} deps - The dependencies for the effect.
+     * @returns {void}
      */
     useEffect(() => {
         const interval = setInterval(() => {
