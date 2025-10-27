@@ -20,8 +20,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load the pre-trained MobileNetV2 model
-model = tf.keras.applications.MobileNetV2(weights='imagenet')
+# Load the pre-trained different models
+#model = tf.keras.applications.MobileNetV2(weights='imagenet')
+model = tf.keras.applications.EfficientNetV2B0(
+    input_shape=(224, 224, 3),
+    include_top=True,
+    weights='imagenet')
+# model = tf.keras.applications.ResNet50(
+#    input_shape=(224, 224, 3),
+#    include_top=True,
+#    weights='imagenet'
+#)
 
 # Placeholder for music data
 # In a real application, you would have a more sophisticated way to store and retrieve music
