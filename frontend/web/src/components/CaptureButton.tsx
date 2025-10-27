@@ -3,7 +3,6 @@
  * @author Jesus Angel Hernandez de Rojas
  * @version 1.0.0
  */
-import React from 'react';
 
 /**
  * @interface CaptureButtonProps
@@ -20,9 +19,9 @@ interface CaptureButtonProps {
  * @component CaptureButton
  * @description This component is responsible for displaying the capture button.
  * @param {CaptureButtonProps} props - The props for the component.
- * @returns {React.ReactElement} The CaptureButton component.
+ * @returns {JSX.Element} The CaptureButton component.
  */
-const CaptureButton: React.FC<CaptureButtonProps> = ({ onClick, text }) => {
+const CaptureButton = ({ onClick, text }: CaptureButtonProps) => {
     return <button onClick={onClick}>{text}</button>;
 };
 

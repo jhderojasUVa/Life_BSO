@@ -9,7 +9,7 @@ import './App.css';
 /**
  * @component App
  * @description This is the main component of the application. It renders the Camera component.
- * @returns {React.ReactElement} The App component.
+ * @returns {JSX.Element} The App component.
  */
 function App() {
     return (

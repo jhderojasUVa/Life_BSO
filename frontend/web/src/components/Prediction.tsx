@@ -3,7 +3,6 @@
  * @author Jesus Angel Hernandez de Rojas
  * @version 1.0.0
  */
-import React from 'react';
 
 /**
  * @interface PredictionProps
@@ -20,9 +19,9 @@ interface PredictionProps {
  * @component Prediction
  * @description This component is responsible for displaying the prediction from the backend.
  * @param {PredictionProps} props - The props for the component.
- * @returns {React.ReactElement | null} The Prediction component.
+ * @returns {JSX.Element | null} The Prediction component.
  */
-const Prediction: React.FC<PredictionProps> = ({ prediction, className }) => {
+const Prediction = ({ prediction, className }: PredictionProps) => {
     return prediction ? <p className={className}>{prediction}</p> : null;
 };
 

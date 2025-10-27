@@ -3,7 +3,7 @@
  * @author Jesus Angel Hernandez de Rojas
  * @version 1.0.0
  */
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Title from './components/Title';
 import VideoFeed from './components/VideoFeed';
@@ -15,9 +15,9 @@ import './Camera.css';
  * @component Camera
  * @description This is the main component of the application. It handles the camera, the prediction, and the audio.
  * It uses two audio elements to create a crossfade effect between the audio files when a different object is detected.
- * @returns {React.ReactElement} The Camera component.
+ * @returns {JSX.Element} The Camera component.
  */
-const Camera: React.FC = () => {
+const Camera = () => {
     // Refs for the video, canvas, and audio elements
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
