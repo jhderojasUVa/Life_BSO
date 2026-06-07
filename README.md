@@ -42,9 +42,20 @@ To run the application using Docker, you will need to have Docker and Docker Com
 
 ### Running Manually
 
+- `make` or `make help`: Show all root commands and prerequisites.
 - `make run`: Run both the frontend and the backend development servers.
 - `make lint`: Lint both the frontend and the backend.
+- `make test`: Run frontend, backend, and Android unit tests.
+- `make build`: Build the web app and Android debug APK.
+- `make android-test`: Run Android unit tests only.
+- `make android-build`: Build Android debug APK only.
 - `make clean`: Clean the backend build artifacts.
+
+Android commands in the root `Makefile` use this order:
+1. `android/gradlew` (if present)
+2. system `gradle` (if installed)
+
+If neither exists, the Makefile prints guidance to either generate the wrapper from Android Studio or install Gradle.
 
 ## Backend
 

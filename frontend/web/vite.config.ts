@@ -6,6 +6,11 @@ export default defineConfig({
   plugins: [react({
     jsxRuntime: 'automatic'
   })],
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+    globals: true,
+  },
   server: {
     host: '0.0.0.0',
     proxy: {

@@ -6,6 +6,7 @@ import tensorflow as tf
 from PIL import Image
 import io
 from logger import log_message
+from music_mapper import map_object_to_music
 
 app = FastAPI()
 
@@ -31,16 +32,6 @@ model = tf.keras.applications.EfficientNetV2B0(
 #    include_top=True,
 #    weights='imagenet'
 #)
-
-# Placeholder for music data
-# In a real application, you would have a more sophisticated way to store and retrieve music
-MUSIC_MAPPING = {
-    "coffee_mug": "coffee_shop.mid",
-    "keyboard": "lofi_beats.mid",
-    "mouse": "electronic_music.mid",
-    # Add more mappings as needed
-}
-DEFAULT_MUSIC = "default_music.mid"
 
 def preprocess_image(image_data):
     log_message("PREPROCESS", "Preprocessing image")
@@ -74,7 +65,7 @@ async def predict(file: UploadFile = File(...)):
     object_name = top_prediction[1]
 
     # Map the object to a music file
-    music_file = MUSIC_MAPPING.get(object_name, DEFAULT_MUSIC)
+    music_file = map_object_to_music(object_name)
     
     log_message("POST", f"Predicted object: {object_name}")
     log_message("POST", f"Music file: {music_file}")

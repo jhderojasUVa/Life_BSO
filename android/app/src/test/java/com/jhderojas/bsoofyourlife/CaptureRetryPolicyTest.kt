@@ -16,4 +16,9 @@ class CaptureRetryPolicyTest {
     fun backoffDelayMs_capsAtMaxDelay() {
         assertEquals(4000L, CaptureRetryPolicy.backoffDelayMs(attempt = 8))
     }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun backoffDelayMs_rejectsInvalidAttempt() {
+        CaptureRetryPolicy.backoffDelayMs(attempt = 0)
+    }
 }

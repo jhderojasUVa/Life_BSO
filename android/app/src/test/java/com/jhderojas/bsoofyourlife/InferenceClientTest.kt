@@ -37,4 +37,11 @@ class InferenceClientTest {
         assertEquals("unknown", result.label)
         assertNull(result.musicUrl)
     }
+
+    @Test
+    fun normalizeBaseUrl_trimsTrailingSlash() {
+        val result = client.normalizeBaseUrl("http://localhost:8000/")
+
+        assertEquals("http://localhost:8000", result)
+    }
 }
