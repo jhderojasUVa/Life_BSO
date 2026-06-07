@@ -1,3 +1,6 @@
 __pycache__/
 music/*
 .vscode/
+android/.gradle/
+android/**/build/
+android/local.properties
