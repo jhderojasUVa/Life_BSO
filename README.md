@@ -2,7 +2,7 @@
 
 **Body, Soul, and Mind**
 
-This project is a web application that uses your camera to recognize objects and plays different music based on the recognized object. It's designed to create a personalized atmosphere based on your environment.
+This project includes web and Android applications that use the camera to recognize objects and play different music based on the recognized object. It's designed to create a personalized atmosphere based on your environment.
 
 ## Getting Started
 
@@ -13,6 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 - Docker and Docker Compose
 - Python 3.9+ and Poetry
 - Node.js and npm
+- Android Studio (for the Android app)
 
 ### Installation
 
@@ -30,7 +31,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Development
 
-This project is set up as a monorepo with a frontend and a backend. You can run the application using Docker or manually using the root `Makefile`.
+This project is set up as a monorepo with frontend, backend, and Android modules. You can run the web application using Docker or manually using the root `Makefile`.
 
 ### Using Docker
 
@@ -52,6 +53,13 @@ For more information about the backend, see the [backend README](./backend/READM
 ## Frontend
 
 For more information about the frontend, see the [frontend README](./frontend/web/README.md).
+
+## Android
+
+The Android module is located at `android/`.
+
+- Open `android/` in Android Studio.
+- Follow Android setup and run instructions in [android README](./android/README.md).
 
 ## Contributing
 
